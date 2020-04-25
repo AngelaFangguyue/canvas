@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CAN</title>
+    <link rel="stylesheet" type="text/css" href="can1.css">
+</head>
+
+<body>
+    <canvas id="ca" width="100" height="100"></canvas>
+    <script>
+
+        var c = document.getElementById("ca");
+
+        c.width = document.documentElement.clientWidth;
+        c.height = document.documentElement.clientHeight;
+
+        var ctx = c.getContext("2d");
+        ctx.fillStyle = "green";
+        ctx.strokeStyle = 'none';
+        ctx.lineWidth = 10;
+        ctx.lineCap = "round";
+        //初始位置坐标
+        let inpos;
+
+        var isTouch = "ontouchstart" in document.documentElement;
+        if (isTouch) {
+
+            c.ontouchstart = (e) => {
+                console.log("start");
+                inpos = [e.clientX, e.clientY];
+            }
+            c.ontouchmove = (e) => {
+                ////ctx.beginPath();
+                ////ctx.arc(e.touches[0].clientX, e.touches[0].clientY, 10, 0, 2 * Math.PI);
+                // ctx.stroke();
+                //// ctx.fill();
+                console.log("move1");
+                drawLine(inpos[0], inpos[1], e.touches[0].clientX, e.touches[0].clientY);
+                console.log("move2");
+                console.log(e);
+                inpos = [e.touches[0].clientX, e.touches[0].clientY];
+            }
+        } else {
+            let flg = false;
+
+            c.onmouseup = () => {
+                flg = false;
+            }
+            c.onmousedown = (e) => {
+                flg = true;
+                inpos = [e.clientX, e.clientY];
+            }
+            c.onmousemove = (e) => {
+                // console.log(e.clientX);
+
+                if (flg === true) {
+                    // ctx.fillRect(e.clientX - 25, e.clientY - 25, 50, 50);
+                    ////ctx.beginPath();
+                    ////ctx.arc(e.clientX, e.clientY, 10, 0, 2 * Math.PI);
+                    // ctx.stroke();
+                    ////ctx.fill();
+                    drawLine(inpos[0], inpos[1], e.clientX, e.clientY);
+                    inpos = [e.clientX, e.clientY];
+
+                } else {
+                    console.log("nothing ");
+                }
+
+            }
+        }
+
+        function drawLine(x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+    </script>
+</body>
+
+</html>
